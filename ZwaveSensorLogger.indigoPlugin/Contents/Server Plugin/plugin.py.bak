@@ -15,8 +15,6 @@ import time
 
 import fnmatch
 
-#This is a test
-
 # Note the "indigo" module is automatically imported and made available inside
 # our global name space by the host process.
 

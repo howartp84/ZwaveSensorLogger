@@ -153,16 +153,20 @@ class Plugin(indigo.PluginBase):
 					if (endpoint <> None):
 						self.debugLog(u"Endpoint[Node]:  " + str(endpoint))
 
-					bmask = bin(int(bytes[10],16))
+					bmask = bin(int(bytes[9]+bytes[10],16))
 					#self.debugLog(str(bmask) + ": " + str(bytes[10]))
 					bstr = '00000000' + bmask[2:]
-					bstr = bstr[-8:]
-					bmdp, bmsc, bmlen = bstr[0:3], bstr[3:5], bstr[5:8]
-					#self.debugLog(u"DP: %s, Scale: %s, ByteLength: %s" % ((bmdp,bmsc,bmlen)))
+					bstr = bstr[-16:]
+					bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmlen = bstr[0:1], bstr[1:3], bstr[3:8], bstr[8:11], bstr[11:13], bstr[13:16]
+					bmsc = bmsc2 + bmsc1
+					self.debugLog(u"Scale2: %s, Rate: %s, Meter: %s, DP: %s, Scale1: %s, ScaleT: %s, ByteLength: %s" % ((bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
+					bmrtype = int(bmrtype,2)
+					bmmtype = int(bmmtype,2)
 					bmdp = int(bmdp,2)
 					bmsc = int(bmsc,2)
 					bmlen = int(bmlen,2)
-					self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bytes[10],bmdp,bmsc,bmlen)))
+					self.debugLog(u"Bitmask: %s, Scale2: %s, Rate: %s, Meter: %s, DP: %s, Scale1: %s, ScaleT: %s, ByteLength: %s" % ((bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
+
 
 					if (bmlen == 1):
 						value = int(bytes[11],16)
@@ -182,19 +186,14 @@ class Plugin(indigo.PluginBase):
 					elif (bmsc == 2): #w
 						self.debugLog(u"Power Reported: " + str(value) + " w")
 						stateid = "totalpowerrep"
+					elif (bmsc == 4): #v
+						self.debugLog(u"Voltage Reported: " + str(value) + " v")
+						stateid = "totalvoltagerep"
+					elif (bmsc == 5): #a
+						self.debugLog(u"Current Reported: " + str(value) + " a")
+						stateid = "totalcurrentrep"
 
 					dev.updateStateOnServer(stateid, value)
-
-					#if (bytes[10] == "74"): #3DP, Watts, 4bytes
-						#fullpower = int(bytes[11] + bytes[12] + bytes[13] + bytes[14],16)
-						#decpower = float(fullpower)/1000
-						#self.debugLog(u"Total Power Reported: " + str(fullpower) + " (" + str(decpower) + ") watts")
-						#dev.updateStateOnServer(stateid, decpower)
-					#elif (bytes[10] == "34"): #1DP, Watts, 4bytes
-						#fullpower = int(bytes[11] + bytes[12] + bytes[13] + bytes[14],16)
-						#decpower = float(fullpower)/10
-						#self.debugLog(u"Total Power Reported: " + str(fullpower) + " (" + str(decpower) + ") watts")
-						#dev.updateStateOnServer(stateid, decpower)
 
 				else: #Invalid size
 					self.debugLog("Incorrect packet size - ignoring")
@@ -211,16 +210,20 @@ class Plugin(indigo.PluginBase):
 						self.debugLog(u"Endpoint[Node]:  " + str(endpoint))
 
 
-					bmask = bin(int(bytes[14],16))
+					bmask = bin(int(bytes[13]+bytes[14],16))
 					#self.debugLog(str(bmask) + ": " + str(bytes[10]))
 					bstr = '00000000' + bmask[2:]
-					bstr = bstr[-8:]
-					bmdp, bmsc, bmlen = bstr[0:3], bstr[3:5], bstr[5:8]
-					#self.debugLog(u"DP: %s, Scale: %s, ByteLength: %s" % ((bmdp,bmsc,bmlen)))
+					bstr = bstr[-16:]
+					bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmlen = bstr[0:1], bstr[1:3], bstr[3:8], bstr[8:11], bstr[11:13], bstr[13:16]
+					bmsc = bmsc2 + bmsc1
+					self.debugLog(u"Scale2: %s, Rate: %s, Meter: %s, DP: %s, Scale1: %s, ScaleT: %s, ByteLength: %s" % ((bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
+					bmrtype = int(bmrtype,2)
+					bmmtype = int(bmmtype,2)
 					bmdp = int(bmdp,2)
 					bmsc = int(bmsc,2)
 					bmlen = int(bmlen,2)
-					self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bytes[14],bmdp,bmsc,bmlen)))
+					self.debugLog(u"Bitmask: %s, Scale2: %s, Rate: %s, Meter: %s, DP: %s, Scale1: %s, ScaleT: %s, ByteLength: %s" % ((bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
+
 
 					if (bmlen == 1):
 						value = int(bytes[15],16)
@@ -234,27 +237,23 @@ class Plugin(indigo.PluginBase):
 					if (bmsc == 0): #kWh
 						self.debugLog(u"Endpoint Energy Reported: " + str(value) + " kWh")
 						stateid = "socket" + str(socketMap[int(bytes[9],16)]) + "energy"
+					elif (bmsc == 1): #kVAh
+						self.debugLog(u"Endpoint Energy Reported: " + str(value) + " kVAh")
+						stateid = "socket" + str(socketMap[int(bytes[9],16)]) + "energy"
 					elif (bmsc == 2): #w
 						self.debugLog(u"Endpoint Power Reported: " + str(value) + " w")
 						stateid = "socket" + str(socketMap[int(bytes[9],16)]) + "power"
+					elif (bmsc == 4): #V
+						self.debugLog(u"Endpoint Voltage Reported: " + str(value) + " v")
+						stateid = "socket" + str(socketMap[int(bytes[9],16)]) + "voltage"
+					elif (bmsc == 5): #A
+						self.debugLog(u"Endpoint Current Reported: " + str(value) + " a")
+						stateid = "socket" + str(socketMap[int(bytes[9],16)]) + "current"
 
 					dev.updateStateOnServer(stateid, value)
 					stampid = "socket" + str(socketMap[int(bytes[9],16)]) + "stamp"
 					timestamp = time.strftime("%d %b %y %H:%M:%S")
 					dev.updateStateOnServer(stampid, str(timestamp))
-
-
-
-					#if (bytes[14] == "74"): #3DP, Watts, 4bytes
-						#fullpower = int(bytes[15] + bytes[16] + bytes[17] + bytes[18],16)
-						#decpower = float(fullpower)/1000
-						#self.debugLog(u"Power: " + str(fullpower) + " (" + str(decpower) + ") watts")
-						#dev.updateStateOnServer(stateid, decpower)
-					#elif (bytes[14] == "34"): #1DP, Watts, 4bytes
-						#fullpower = int(bytes[15] + bytes[16] + bytes[17] + bytes[18],16)
-						#decpower = float(fullpower)/10
-						#self.debugLog(u"Power: " + str(fullpower) + " (" + str(decpower) + ") watts")
-						#dev.updateStateOnServer(stateid, decpower)
 
 					self.debugLog(u"")
 
@@ -265,6 +264,14 @@ class Plugin(indigo.PluginBase):
 					tpower = float(dev.states["socket1power"]) + float(dev.states["socket2power"]) + float(dev.states["socket3power"]) + float(dev.states["socket4power"]) + float(dev.states["socket5power"]) + float(dev.states["socket6power"]) + float(dev.states["socket7power"]) + float(dev.states["socket8power"])
 					self.debugLog(u"Total Power Calculated: " + str(tpower) + " w")
 					dev.updateStateOnServer("totalpowercalc",tpower)
+
+					tvoltage = float(dev.states["socket1voltage"]) + float(dev.states["socket2voltage"]) + float(dev.states["socket3voltage"]) + float(dev.states["socket4voltage"]) + float(dev.states["socket5voltage"]) + float(dev.states["socket6voltage"]) + float(dev.states["socket7voltage"]) + float(dev.states["socket8voltage"])
+					self.debugLog(u"Total Voltage Calculated: " + str(tvoltage) + " v")
+					dev.updateStateOnServer("totalvoltagecalc",tvoltage)
+					
+					tcurrent = float(dev.states["socket1current"]) + float(dev.states["socket2current"]) + float(dev.states["socket3current"]) + float(dev.states["socket4current"]) + float(dev.states["socket5current"]) + float(dev.states["socket6current"]) + float(dev.states["socket7current"]) + float(dev.states["socket8current"])
+					self.debugLog(u"Total Current Calculated: " + str(tcurrent) + " a")
+					dev.updateStateOnServer("totalenergycalc",tcurrent)
 
 				else: #Incorrect size
 					self.debugLog("Incorrect packet size - ignoring")
@@ -319,20 +326,6 @@ class Plugin(indigo.PluginBase):
 				timestamp = time.strftime("%d %b %y %H:%M:%S")
 				dev.updateStateOnServer(stampid, str(timestamp))
 
-
-
-				#self.debugLog(u"Format:    %s" % (bytes[10]))
-				#stateid = "humidity"
-				#self.debugLog(u"State:     %s" % (stateid))
-				#if (bytes[10] == "42"): #2DP, %age, 2bytes
-					#humid = int(bytes[11] + bytes[12],16)
-					#dechumid = float(humid)/100
-					#self.debugLog(u"Humidity Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(dechumid) + "%")
-					#dev.updateStateOnServer(stateid, dechumid)
-					#stampid = stateid + "stamp"
-					#timestamp = time.strftime("%s %b %y %H:%M:%S")
-					#dev.updateStateOnServer(stampid, str(timestamp))
-
 			elif (bytes[7] == "31") and (bytes[8] == "05") and (bytes[9] == "01"): #TEMPERATURE SENSOR REPORT (Base Device)
 				#self.debugLog(u"-----")
 				#self.debugLog(u"Base temperature report received:")
@@ -360,6 +353,7 @@ class Plugin(indigo.PluginBase):
 					value = int(bytes[11] + bytes[12] + bytes[13] + bytes[14],16)
 
 				value = float(value) / (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
+
 
 				if (bmsc == 0): # celsius
 					uivalue = value + " °c"

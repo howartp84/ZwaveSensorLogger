@@ -77,43 +77,143 @@
 			</State>
 			<State id="socket1energy">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Socket 1 Power Usage</TriggerLabel>
-				<ControlPageLabel>Socket 1 Power Usage</ControlPageLabel>
+				<TriggerLabel>Socket 1 Energy Usage</TriggerLabel>
+				<ControlPageLabel>Socket 1 Energy Usage</ControlPageLabel>
 			</State>
 			<State id="socket2energy">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Socket 2 Power Usage</TriggerLabel>
-				<ControlPageLabel>Socket 2 Power Usage</ControlPageLabel>
+				<TriggerLabel>Socket 2 Energy Usage</TriggerLabel>
+				<ControlPageLabel>Socket 2 Energy Usage</ControlPageLabel>
 			</State>
 			<State id="socket3energy">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Socket 3 Power Usage</TriggerLabel>
-				<ControlPageLabel>Socket 3 Power Usage</ControlPageLabel>
+				<TriggerLabel>Socket 3 Energy Usage</TriggerLabel>
+				<ControlPageLabel>Socket 3 Energy Usage</ControlPageLabel>
 			</State>
 			<State id="socket4energy">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Socket 4 Power Usage</TriggerLabel>
-				<ControlPageLabel>Socket 4 Power Usage</ControlPageLabel>
+				<TriggerLabel>Socket 4 Energy Usage</TriggerLabel>
+				<ControlPageLabel>Socket 4 Energy Usage</ControlPageLabel>
 			</State>
 			<State id="socket5energy">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Socket 5 Power Usage</TriggerLabel>
-				<ControlPageLabel>Socket 5 Power Usage</ControlPageLabel>
+				<TriggerLabel>Socket 5 Energy Usage</TriggerLabel>
+				<ControlPageLabel>Socket 5 Energy Usage</ControlPageLabel>
 			</State>
 			<State id="socket6energy">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Socket 6 Power Usage</TriggerLabel>
-				<ControlPageLabel>Socket 6 Power Usage</ControlPageLabel>
+				<TriggerLabel>Socket 6 Energy Usage</TriggerLabel>
+				<ControlPageLabel>Socket 6 Energy Usage</ControlPageLabel>
 			</State>
 			<State id="socket7energy">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Socket 7 Power Usage</TriggerLabel>
-				<ControlPageLabel>Socket 7 Power Usage</ControlPageLabel>
+				<TriggerLabel>Socket 7 Energy Usage</TriggerLabel>
+				<ControlPageLabel>Socket 7 Energy Usage</ControlPageLabel>
 			</State>
 			<State id="socket8energy">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Socket 8 Power Usage</TriggerLabel>
-				<ControlPageLabel>Socket 8 Power Usage</ControlPageLabel>
+				<TriggerLabel>Socket 8 Energy Usage</TriggerLabel>
+				<ControlPageLabel>Socket 8 Energy Usage</ControlPageLabel>
+			</State>
+			<State id="totalvoltagecalc">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Total Voltage Calculated</TriggerLabel>
+				<ControlPageLabel>Total Voltage Calculated</ControlPageLabel>
+			</State>
+			<State id="totalvoltagerep">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Total Voltage</TriggerLabel>
+				<ControlPageLabel>Total Voltage</ControlPageLabel>
+			</State>
+			<State id="socket1voltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 1 Voltage</TriggerLabel>
+				<ControlPageLabel>Socket 1 Voltage</ControlPageLabel>
+			</State>
+			<State id="socket2voltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 2 Voltage</TriggerLabel>
+				<ControlPageLabel>Socket 2 Voltage</ControlPageLabel>
+			</State>
+			<State id="socket3voltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 3 Voltage</TriggerLabel>
+				<ControlPageLabel>Socket 3 Voltage</ControlPageLabel>
+			</State>
+			<State id="socket4voltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 4 Voltage</TriggerLabel>
+				<ControlPageLabel>Socket 4 Voltage</ControlPageLabel>
+			</State>
+			<State id="socket5voltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 5 Voltage</TriggerLabel>
+				<ControlPageLabel>Socket 5 Voltage</ControlPageLabel>
+			</State>
+			<State id="socket6voltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 6 Voltage</TriggerLabel>
+				<ControlPageLabel>Socket 6 Voltage</ControlPageLabel>
+			</State>
+			<State id="socket7voltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 7 Voltage</TriggerLabel>
+				<ControlPageLabel>Socket 7 Voltage</ControlPageLabel>
+			</State>
+			<State id="socket8voltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 8 Voltage</TriggerLabel>
+				<ControlPageLabel>Socket 8 Voltage</ControlPageLabel>
+			</State>
+			<State id="totalcurrentcalc">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Total Current Calculated</TriggerLabel>
+				<ControlPageLabel>Total Current Calculated</ControlPageLabel>
+			</State>
+			<State id="totalcurrentrep">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Total Current</TriggerLabel>
+				<ControlPageLabel>Total Current</ControlPageLabel>
+			</State>
+			<State id="socket1current">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 1 Current</TriggerLabel>
+				<ControlPageLabel>Socket 1 Current</ControlPageLabel>
+			</State>
+			<State id="socket2current">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 2 Current</TriggerLabel>
+				<ControlPageLabel>Socket 2 Current</ControlPageLabel>
+			</State>
+			<State id="socket3current">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 3 Current</TriggerLabel>
+				<ControlPageLabel>Socket 3 Current</ControlPageLabel>
+			</State>
+			<State id="socket4current">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 4 Current</TriggerLabel>
+				<ControlPageLabel>Socket 4 Current</ControlPageLabel>
+			</State>
+			<State id="socket5current">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 5 Current</TriggerLabel>
+				<ControlPageLabel>Socket 5 Current</ControlPageLabel>
+			</State>
+			<State id="socket6current">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 6 Current</TriggerLabel>
+				<ControlPageLabel>Socket 6 Current</ControlPageLabel>
+			</State>
+			<State id="socket7current">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 7 Current</TriggerLabel>
+				<ControlPageLabel>Socket 7 Current</ControlPageLabel>
+			</State>
+			<State id="socket8current">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Socket 8 Current</TriggerLabel>
+				<ControlPageLabel>Socket 8 Current</ControlPageLabel>
 			</State>
 			<State id="socket1stamp">
 				<ValueType>Number</ValueType>

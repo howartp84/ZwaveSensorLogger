@@ -268,7 +268,7 @@ class Plugin(indigo.PluginBase):
 					tvoltage = float(dev.states["socket1voltage"]) + float(dev.states["socket2voltage"]) + float(dev.states["socket3voltage"]) + float(dev.states["socket4voltage"]) + float(dev.states["socket5voltage"]) + float(dev.states["socket6voltage"]) + float(dev.states["socket7voltage"]) + float(dev.states["socket8voltage"])
 					self.debugLog(u"Total Voltage Calculated: " + str(tvoltage) + " v")
 					dev.updateStateOnServer("totalvoltagecalc",tvoltage)
-					
+
 					tcurrent = float(dev.states["socket1current"]) + float(dev.states["socket2current"]) + float(dev.states["socket3current"]) + float(dev.states["socket4current"]) + float(dev.states["socket5current"]) + float(dev.states["socket6current"]) + float(dev.states["socket7current"]) + float(dev.states["socket8current"])
 					self.debugLog(u"Total Current Calculated: " + str(tcurrent) + " a")
 					dev.updateStateOnServer("totalenergycalc",tcurrent)
@@ -343,7 +343,7 @@ class Plugin(indigo.PluginBase):
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bytes[14],bmdp,bmsc,bmlen)))
+				self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bytes[10],bmdp,bmsc,bmlen)))
 
 				if (bmlen == 1):
 					value = int(bytes[11],16)
@@ -374,21 +374,6 @@ class Plugin(indigo.PluginBase):
 				dev.updateStateOnServer(stampid, str(timestamp))
 
 
-
-
-
-				#stateid = "temp" + str(endpoint)
-				#if (endpoint == None):
-					#stateid = "temp1"
-				#self.debugLog(u"State:     %s" % (stateid))
-				#if (bytes[10] == "42"): #2DP, Celsius, 2bytes
-					#temp = int(bytes[11] + bytes[12],16)
-					#dectemp = float(temp)/100
-					#self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(dectemp) + " celsius")
-					#dev.updateStateOnServer(stateid, dectemp)
-					#stampid = stateid + "stamp"
-					#timestamp = time.strftime("%d %b %y %H:%M:%S")
-					#dev.updateStateOnServer(stampid, str(timestamp))
 
 			if (bytes[7] == "60") and (bytes[8] == "0D") and (bytes[11] == "31") and (bytes[12] == "05"): #MULTI_CHANNEL SENSOR
 				#self.debugLog(u"-----")
@@ -438,17 +423,6 @@ class Plugin(indigo.PluginBase):
 				timestamp = time.strftime("%d %b %y %H:%M:%S")
 				dev.updateStateOnServer(stampid, str(timestamp))
 
-
-				#stateid = "temp" + str(socketMap[int(bytes[9],16)])
-				#self.debugLog(u"State:     %s" % (stateid))
-				#if (bytes[14] == "42"): #2DP, Celsius, 2bytes
-					#temp = int(bytes[15] + bytes[16],16)
-					#dectemp = float(temp)/100
-					#self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " *Endpoint " + str(int(bytes[9],16)) + "): " + str(dectemp) + " celsius")
-					#dev.updateStateOnServer(stateid, dectemp)
-					#stampid = stateid + "stamp"
-					#timestamp = time.strftime("%d %b %y %H:%M:%S")
-					#dev.updateStateOnServer(stampid, str(timestamp))
 
 ##########################################################################################################################################################
 

@@ -303,7 +303,7 @@ class Plugin(indigo.PluginBase):
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bytes[14],bmdp,bmsc,bmlen)))
+				self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bmask,bmdp,bmsc,bmlen)))
 
 				if (bmlen == 1):
 					value = int(bytes[11],16)
@@ -343,7 +343,7 @@ class Plugin(indigo.PluginBase):
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bytes[10],bmdp,bmsc,bmlen)))
+				self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bmask,bmdp,bmsc,bmlen)))
 
 				if (bmlen == 1):
 					value = int(bytes[11],16)
@@ -356,13 +356,13 @@ class Plugin(indigo.PluginBase):
 
 
 				if (bmsc == 0): # celsius
-					uivalue = value + " °c"
+					uivalue = str(value) + " °c"
 					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(dectemp) + " celsius")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
 						stateid = "temp1"
 				elif (bmsc == 1): #farenheit
-					uivalue = value + " °f"
+					uivalue = str(value) + " °f"
 					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(dectemp) + " fahrenheit")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):

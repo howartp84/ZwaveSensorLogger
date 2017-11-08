@@ -357,13 +357,13 @@ class Plugin(indigo.PluginBase):
 
 				if (bmsc == 0): # celsius
 					uivalue = str(value) + " °c"
-					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(dectemp) + " celsius")
+					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(value) + " celsius")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
 						stateid = "temp1"
 				elif (bmsc == 1): #farenheit
 					uivalue = str(value) + " °f"
-					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(dectemp) + " fahrenheit")
+					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(value) + " fahrenheit")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
 						stateid = "temp1"
@@ -394,7 +394,7 @@ class Plugin(indigo.PluginBase):
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bytes[14],bmdp,bmsc,bmlen)))
+				self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bmask,bmdp,bmsc,bmlen)))
 
 				if (bmlen == 1):
 					value = int(bytes[15],16)
@@ -407,13 +407,13 @@ class Plugin(indigo.PluginBase):
 
 				if (bmsc == 0): # celsius
 					uivalue = value + " °c"
-					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(dectemp) + " celsius")
+					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(value) + " celsius")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
 						stateid = "temp1"
 				elif (bmsc == 1): # fahrenheit
 					uivalue = value + " °f"
-					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(dectemp) + " fahrenheit")
+					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(value) + " fahrenheit")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
 						stateid = "temp1"

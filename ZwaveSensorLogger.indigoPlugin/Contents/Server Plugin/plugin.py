@@ -35,6 +35,7 @@ class Plugin(indigo.PluginBase):
 	def __init__(self, pluginId, pluginDisplayName, pluginVersion, pluginPrefs):
 		super(Plugin, self).__init__(pluginId, pluginDisplayName, pluginVersion, pluginPrefs)
 		self.debug = pluginPrefs.get("showDebugInfo", False)
+		self.version = pluginVersion
 
 		self.powerIDs = list()
 		self.tempIDs = list()
@@ -49,6 +50,7 @@ class Plugin(indigo.PluginBase):
 	########################################
 	def startup(self):
 		self.debugLog(u"startup called")
+		self.debugLog("Plugin version: {}".format(self.version))
 		indigo.zwave.subscribeToIncoming()
 		#indigo.zwave.subscribeToOutgoing()
 
@@ -138,19 +140,19 @@ class Plugin(indigo.PluginBase):
 		nodeId = int(bytes[5],16)
 
 		if (int(bytes[5],16)) in self.powerIDs: #Power Devices
-			#self.debugLog(u"Raw command received (Node %s): %s" % ((int(bytes[5],16)),(byteListStr)))
+			#self.debugLog(u"Raw command received (Node {}): {}".format((int(bytes[5],16)),(byteListStr)))
 
 			socketMap = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6} #socketMap[endPoint] = SocketNo
 
 			dev=indigo.devices[self.devFromNode[nodeId]]
 
 			if (bytes[7] == "32") and (bytes[8] == "02"): #ENERGY REPORT (Base Device)
-				if (len(bytes) <> 99):
+				if (len(bytes) != 99):
 					self.debugLog(u"-----")
 					#self.debugLog(u"Power/Energy report received:")
-					self.debugLog(u"Raw command: %s" % (byteListStr))
-					#self.debugLog(u"Node:      %s" % (int(bytes[5],16)))
-					if (endpoint <> None):
+					self.debugLog(u"Raw command: {}".format(byteListStr))
+					#self.debugLog(u"Node:      {}".format(int(bytes[5],16)))
+					if (endpoint != None):
 						self.debugLog(u"Endpoint[Node]:  " + str(endpoint))
 
 					bmask = bin(int(bytes[9]+bytes[10],16))
@@ -159,13 +161,13 @@ class Plugin(indigo.PluginBase):
 					bstr = bstr[-16:]
 					bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmlen = bstr[0:1], bstr[1:3], bstr[3:8], bstr[8:11], bstr[11:13], bstr[13:16]
 					bmsc = bmsc2 + bmsc1
-					self.debugLog(u"Scale2: %s, Rate: %s, Meter: %s, DP: %s, Scale1: %s, ScaleT: %s, ByteLength: %s" % ((bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
+					self.debugLog(u"Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format((bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
 					bmrtype = int(bmrtype,2)
 					bmmtype = int(bmmtype,2)
 					bmdp = int(bmdp,2)
 					bmsc = int(bmsc,2)
 					bmlen = int(bmlen,2)
-					self.debugLog(u"Bitmask: %s, Scale2: %s, Rate: %s, Meter: %s, DP: %s, Scale1: %s, ScaleT: %s, ByteLength: %s" % ((bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
+					self.debugLog(u"Bitmask: {}, Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format((bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
 
 
 					if (bmlen == 1):
@@ -175,7 +177,10 @@ class Plugin(indigo.PluginBase):
 					elif (bmlen == 4):
 						value = int(bytes[11] + bytes[12] + bytes[13] + bytes[14],16)
 
-					value = float(value) / (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
+					#Python3 change (/ to //)
+					#Py3 change (/ to //)
+
+					value = float(value) // (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
 
 					if (bmsc == 0): #kWh
 						self.debugLog(u"Energy Reported: " + str(value) + " kWh")
@@ -200,13 +205,13 @@ class Plugin(indigo.PluginBase):
 
 
 			if (bytes[7] == "60") and (bytes[8] == "0D") and (bytes[11] == "32") and (bytes[12] == "02"): #MULTI_CHANNEL ENERGY
-				if (len(bytes) <> 99):
+				if (len(bytes) != 99):
 					self.debugLog(u"-----")
 					#self.debugLog(u"Power/Energy report received:")
-					self.debugLog(u"Raw command: %s" % (byteListStr))
-					#self.debugLog(u"Node:      %s" % (int(bytes[5],16)))
-					self.debugLog(u"Endpoint[Raw]:  %s" % (int(bytes[9],16)))
-					if (endpoint <> None):
+					self.debugLog(u"Raw command: {}".format(byteListStr))
+					#self.debugLog(u"Node:      {}".format(int(bytes[5],16)))
+					self.debugLog(u"Endpoint[Raw]:  {}".format(int(bytes[9],16)))
+					if (endpoint != None):
 						self.debugLog(u"Endpoint[Node]:  " + str(endpoint))
 
 
@@ -216,13 +221,13 @@ class Plugin(indigo.PluginBase):
 					bstr = bstr[-16:]
 					bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmlen = bstr[0:1], bstr[1:3], bstr[3:8], bstr[8:11], bstr[11:13], bstr[13:16]
 					bmsc = bmsc2 + bmsc1
-					self.debugLog(u"Scale2: %s, Rate: %s, Meter: %s, DP: %s, Scale1: %s, ScaleT: %s, ByteLength: %s" % ((bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
+					self.debugLog(u"Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format((bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
 					bmrtype = int(bmrtype,2)
 					bmmtype = int(bmmtype,2)
 					bmdp = int(bmdp,2)
 					bmsc = int(bmsc,2)
 					bmlen = int(bmlen,2)
-					self.debugLog(u"Bitmask: %s, Scale2: %s, Rate: %s, Meter: %s, DP: %s, Scale1: %s, ScaleT: %s, ByteLength: %s" % ((bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
+					self.debugLog(u"Bitmask: {}, Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format((bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
 
 
 					if (bmlen == 1):
@@ -232,7 +237,10 @@ class Plugin(indigo.PluginBase):
 					elif (bmlen == 4):
 						value = int(bytes[15] + bytes[16] + bytes[17] + bytes[18],16)
 
-					value = float(value) / (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
+					#Python3 change (/ to //)
+					#Py3 change (/ to //)
+
+					value = float(value) // (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
 
 					if (bmsc == 0): #kWh
 						self.debugLog(u"Endpoint Energy Reported: " + str(value) + " kWh")
@@ -281,7 +289,7 @@ class Plugin(indigo.PluginBase):
 
 
 		if (int(bytes[5],16)) in self.tempIDs: #Temperature Devices
-			#self.debugLog(u"Raw command received (Node %s): %s" % ((int(bytes[5],16)),(byteListStr)))
+			#self.debugLog(u"Raw command received (Node {}): {}".format((int(bytes[5],16)),(byteListStr)))
 
 			socketMap = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6} #socketMap[endPoint] = SocketNo
 
@@ -290,8 +298,8 @@ class Plugin(indigo.PluginBase):
 			if (bytes[7] == "31") and (bytes[8] == "05") and (bytes[9] == "05"): #HUMIDITY SENSOR REPORT (Base Device)
 				#self.debugLog(u"-----")
 				#self.debugLog(u"Humidity report received:")
-				#self.debugLog(u"Raw command: %s" % (byteListStr))
-				#self.debugLog(u"Node:      %s" % (int(bytes[5],16)))
+				#self.debugLog(u"Raw command: {}".format(byteListStr))
+				#self.debugLog(u"Node:      {}".format(int(bytes[5],16)))
 				#self.debugLog(u"Endpoint:  Base")
 
 				bmask = bin(int(bytes[10],16))
@@ -299,11 +307,11 @@ class Plugin(indigo.PluginBase):
 				bstr = '00000000' + bmask[2:]
 				bstr = bstr[-8:]
 				bmdp, bmsc, bmlen = bstr[0:3], bstr[3:5], bstr[5:8]
-				#self.debugLog(u"DP: %s, Scale: %s, ByteLength: %s" % ((bmdp,bmsc,bmlen)))
+				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format((bmdp,bmsc,bmlen)))
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bmask,bmdp,bmsc,bmlen)))
+				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format((bmask,bmdp,bmsc,bmlen)))
 
 				if (bmlen == 1):
 					value = int(bytes[11],16)
@@ -312,7 +320,10 @@ class Plugin(indigo.PluginBase):
 				elif (bmlen == 4):
 					value = int(bytes[11] + bytes[12] + bytes[13] + bytes[14],16)
 
-				value = float(value) / (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
+				#Python3 change (/ to //)
+				#Py3 change (/ to //)
+
+				value = float(value) // (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
 
 				if (bmsc == 0): # %age humidity
 					self.debugLog(u"Humidity Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(dechumid) + "%")
@@ -329,8 +340,8 @@ class Plugin(indigo.PluginBase):
 			elif (bytes[7] == "31") and (bytes[8] == "05") and (bytes[9] == "01"): #TEMPERATURE SENSOR REPORT (Base Device)
 				#self.debugLog(u"-----")
 				#self.debugLog(u"Base temperature report received:")
-				#self.debugLog(u"Raw command: %s" % (byteListStr))
-				##self.debugLog(u"Node:      %s" % (int(bytes[5],16)))
+				#self.debugLog(u"Raw command: {}".format(byteListStr))
+				##self.debugLog(u"Node:      {}".format(int(bytes[5],16)))
 				#self.debugLog(u"Endpoint:  Base")
 
 
@@ -339,11 +350,11 @@ class Plugin(indigo.PluginBase):
 				bstr = '00000000' + bmask[2:]
 				bstr = bstr[-8:]
 				bmdp, bmsc, bmlen = bstr[0:3], bstr[3:5], bstr[5:8]
-				#self.debugLog(u"DP: %s, Scale: %s, ByteLength: %s" % ((bmdp,bmsc,bmlen)))
+				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format((bmdp,bmsc,bmlen)))
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bmask,bmdp,bmsc,bmlen)))
+				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format((bmask,bmdp,bmsc,bmlen)))
 
 				if (bmlen == 1):
 					value = int(bytes[11],16)
@@ -352,17 +363,19 @@ class Plugin(indigo.PluginBase):
 				elif (bmlen == 4):
 					value = int(bytes[11] + bytes[12] + bytes[13] + bytes[14],16)
 
-				value = float(value) / (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
+				#Python3 change (/ to //)
+				#Py3 change (/ to //)
 
+				value = float(value) // (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
 
 				if (bmsc == 0): # celsius
-					uivalue = str(value) + " °c"
+					uivalue = str(value) + " Â°c"
 					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(value) + " celsius")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
 						stateid = "temp1"
 				elif (bmsc == 1): #farenheit
-					uivalue = str(value) + " °f"
+					uivalue = str(value) + " Â°f"
 					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(value) + " fahrenheit")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
@@ -378,23 +391,23 @@ class Plugin(indigo.PluginBase):
 			if (bytes[7] == "60") and (bytes[8] == "0D") and (bytes[11] == "31") and (bytes[12] == "05"): #MULTI_CHANNEL SENSOR
 				#self.debugLog(u"-----")
 				#self.debugLog(u"Endpoint Temperature report received:")
-				#self.debugLog(u"Raw command: %s" % (byteListStr))
-				#self.debugLog(u"Node:      %s" % (int(bytes[5],16)))
-				#self.debugLog(u"Endpoint:  %s" % (int(bytes[9],16)))
-				#self.debugLog(u"Device:    %s" % (socketMap[int(bytes[9],16)]))
-				#self.debugLog(u"Format:    %s" % (bytes[14]))
-				#self.debugLog(u"Power (w): %s" % (socketMap[int(bytes[9],16)]))
+				#self.debugLog(u"Raw command: {}".format(byteListStr))
+				#self.debugLog(u"Node:      {}".format(int(bytes[5],16)))
+				#self.debugLog(u"Endpoint:  {}".format(int(bytes[9],16)))
+				#self.debugLog(u"Device:    {}".format(socketMap[int(bytes[9],16)]))
+				#self.debugLog(u"Format:    {}".format(bytes[14]))
+				#self.debugLog(u"Power (w): {}".format(socketMap[int(bytes[9],16)]))
 
 				bmask = bin(int(bytes[14],16))
 				#self.debugLog(str(bmask) + ": " + str(bytes[10]))
 				bstr = '00000000' + bmask[2:]
 				bstr = bstr[-8:]
 				bmdp, bmsc, bmlen = bstr[0:3], bstr[3:5], bstr[5:8]
-				#self.debugLog(u"DP: %s, Scale: %s, ByteLength: %s" % ((bmdp,bmsc,bmlen)))
+				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format((bmdp,bmsc,bmlen)))
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: %s, DP: %s, Scale: %s, ByteLength: %s" % ((bmask,bmdp,bmsc,bmlen)))
+				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format((bmask,bmdp,bmsc,bmlen)))
 
 				if (bmlen == 1):
 					value = int(bytes[15],16)
@@ -403,16 +416,19 @@ class Plugin(indigo.PluginBase):
 				elif (bmlen == 4):
 					value = int(bytes[15] + bytes[16] + bytes[17] + bytes[18],16)
 
-				value = float(value) / (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
+				#Python3 change (/ to //)
+				#Py3 change (/ to //)
+
+				value = float(value) // (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
 
 				if (bmsc == 0): # celsius
-					uivalue = value + " °c"
+					uivalue = value + " ?c"
 					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(value) + " celsius")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
 						stateid = "temp1"
 				elif (bmsc == 1): # fahrenheit
-					uivalue = value + " °f"
+					uivalue = value + " ?f"
 					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(value) + " fahrenheit")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
@@ -441,9 +457,9 @@ class Plugin(indigo.PluginBase):
 
 		if nodeId:
 			if int(nodeId) in self.powerIDs:
-				self.debugLog(u"Raw command sent (Node %s): %s (%s)" % (nodeId,byteListStr,cmdSuccess))
+				self.debugLog(u"Raw command sent (Node {}): {} ({})".format(nodeId,byteListStr,cmdSuccess))
 			if int(nodeId) in self.tempIDs:
-				self.debugLog(u"Raw command sent (Node %s): %s (%s)" % (nodeId,byteListStr,cmdSuccess))
+				self.debugLog(u"Raw command sent (Node {}): {} ({})".format(nodeId,byteListStr,cmdSuccess))
 
 
 	def getPowerAll(self,pluginAction):

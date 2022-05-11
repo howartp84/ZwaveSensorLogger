@@ -140,7 +140,7 @@ class Plugin(indigo.PluginBase):
 		nodeId = int(bytes[5],16)
 
 		if (int(bytes[5],16)) in self.powerIDs: #Power Devices
-			#self.debugLog(u"Raw command received (Node {}): {}".format((int(bytes[5],16)),(byteListStr)))
+			#self.debugLog(u"Raw command received (Node {}): {}".format(int(bytes[5],16),byteListStr))
 
 			socketMap = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6} #socketMap[endPoint] = SocketNo
 
@@ -161,13 +161,13 @@ class Plugin(indigo.PluginBase):
 					bstr = bstr[-16:]
 					bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmlen = bstr[0:1], bstr[1:3], bstr[3:8], bstr[8:11], bstr[11:13], bstr[13:16]
 					bmsc = bmsc2 + bmsc1
-					self.debugLog(u"Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format((bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
+					self.debugLog(u"Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format(bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen))
 					bmrtype = int(bmrtype,2)
 					bmmtype = int(bmmtype,2)
 					bmdp = int(bmdp,2)
 					bmsc = int(bmsc,2)
 					bmlen = int(bmlen,2)
-					self.debugLog(u"Bitmask: {}, Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format((bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
+					self.debugLog(u"Bitmask: {}, Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format(bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen))
 
 
 					if (bmlen == 1):
@@ -221,13 +221,13 @@ class Plugin(indigo.PluginBase):
 					bstr = bstr[-16:]
 					bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmlen = bstr[0:1], bstr[1:3], bstr[3:8], bstr[8:11], bstr[11:13], bstr[13:16]
 					bmsc = bmsc2 + bmsc1
-					self.debugLog(u"Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format((bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
+					self.debugLog(u"Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format(bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen))
 					bmrtype = int(bmrtype,2)
 					bmmtype = int(bmmtype,2)
 					bmdp = int(bmdp,2)
 					bmsc = int(bmsc,2)
 					bmlen = int(bmlen,2)
-					self.debugLog(u"Bitmask: {}, Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format((bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
+					self.debugLog(u"Bitmask: {}, Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format(bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen))
 
 
 					if (bmlen == 1):
@@ -289,7 +289,7 @@ class Plugin(indigo.PluginBase):
 
 
 		if (int(bytes[5],16)) in self.tempIDs: #Temperature Devices
-			#self.debugLog(u"Raw command received (Node {}): {}".format((int(bytes[5],16)),(byteListStr)))
+			#self.debugLog(u"Raw command received (Node {}): {}".format(int(bytes[5],16),(byteListStr)))
 
 			socketMap = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6} #socketMap[endPoint] = SocketNo
 
@@ -307,11 +307,11 @@ class Plugin(indigo.PluginBase):
 				bstr = '00000000' + bmask[2:]
 				bstr = bstr[-8:]
 				bmdp, bmsc, bmlen = bstr[0:3], bstr[3:5], bstr[5:8]
-				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format((bmdp,bmsc,bmlen)))
+				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format(bmdp,bmsc,bmlen))
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format((bmask,bmdp,bmsc,bmlen)))
+				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format(bmask,bmdp,bmsc,bmlen))
 
 				if (bmlen == 1):
 					value = int(bytes[11],16)
@@ -350,11 +350,11 @@ class Plugin(indigo.PluginBase):
 				bstr = '00000000' + bmask[2:]
 				bstr = bstr[-8:]
 				bmdp, bmsc, bmlen = bstr[0:3], bstr[3:5], bstr[5:8]
-				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format((bmdp,bmsc,bmlen)))
+				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format(bmdp,bmsc,bmlen))
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format((bmask,bmdp,bmsc,bmlen)))
+				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format(bmask,bmdp,bmsc,bmlen))
 
 				if (bmlen == 1):
 					value = int(bytes[11],16)
@@ -403,11 +403,11 @@ class Plugin(indigo.PluginBase):
 				bstr = '00000000' + bmask[2:]
 				bstr = bstr[-8:]
 				bmdp, bmsc, bmlen = bstr[0:3], bstr[3:5], bstr[5:8]
-				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format((bmdp,bmsc,bmlen)))
+				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format(bmdp,bmsc,bmlen))
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format((bmask,bmdp,bmsc,bmlen)))
+				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format(bmask,bmdp,bmsc,bmlen))
 
 				if (bmlen == 1):
 					value = int(bytes[15],16)

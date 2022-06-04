@@ -140,7 +140,7 @@ class Plugin(indigo.PluginBase):
 		nodeId = int(bytes[5],16)
 
 		if (int(bytes[5],16)) in self.powerIDs: #Power Devices
-			#self.debugLog(u"Raw command received (Node {}): {}".format(int(bytes[5],16),byteListStr))
+			#self.debugLog(u"Raw command received (Node {}): {}".format((int(bytes[5],16)),(byteListStr)))
 
 			socketMap = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6} #socketMap[endPoint] = SocketNo
 
@@ -161,13 +161,13 @@ class Plugin(indigo.PluginBase):
 					bstr = bstr[-16:]
 					bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmlen = bstr[0:1], bstr[1:3], bstr[3:8], bstr[8:11], bstr[11:13], bstr[13:16]
 					bmsc = bmsc2 + bmsc1
-					self.debugLog(u"Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format(bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen))
+					self.debugLog(u"Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format((bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
 					bmrtype = int(bmrtype,2)
 					bmmtype = int(bmmtype,2)
 					bmdp = int(bmdp,2)
 					bmsc = int(bmsc,2)
 					bmlen = int(bmlen,2)
-					self.debugLog(u"Bitmask: {}, Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format(bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen))
+					self.debugLog(u"Bitmask: {}, Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format((bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
 
 
 					if (bmlen == 1):
@@ -183,19 +183,19 @@ class Plugin(indigo.PluginBase):
 					value = float(value) // (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
 
 					if (bmsc == 0): #kWh
-						self.debugLog(u"Energy Reported: {} kWh".format(str(value)))
+						self.debugLog(u"Energy Reported: " + str(value) + " kWh")
 						stateid = "totalenergyrep"
 					elif (bmsc == 1): #kVAh
-						self.debugLog(u"Energy Reported: {} kVah".format(str(value)))
+						self.debugLog(u"Energy Reported: " + str(value) + " kVAh")
 						stateid = "totalenergyrep"
 					elif (bmsc == 2): #w
-						self.debugLog(u"Power Reported: {} w".format(str(value)))
+						self.debugLog(u"Power Reported: " + str(value) + " w")
 						stateid = "totalpowerrep"
 					elif (bmsc == 4): #v
-						self.debugLog(u"Voltage Reported: {} v".format(str(value)))
+						self.debugLog(u"Voltage Reported: " + str(value) + " v")
 						stateid = "totalvoltagerep"
 					elif (bmsc == 5): #a
-						self.debugLog(u"Current Reported: {} a".format(str(value)))
+						self.debugLog(u"Current Reported: " + str(value) + " a")
 						stateid = "totalcurrentrep"
 
 					dev.updateStateOnServer(stateid, value)
@@ -221,13 +221,13 @@ class Plugin(indigo.PluginBase):
 					bstr = bstr[-16:]
 					bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmlen = bstr[0:1], bstr[1:3], bstr[3:8], bstr[8:11], bstr[11:13], bstr[13:16]
 					bmsc = bmsc2 + bmsc1
-					self.debugLog(u"Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format(bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen))
+					self.debugLog(u"Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format((bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
 					bmrtype = int(bmrtype,2)
 					bmmtype = int(bmmtype,2)
 					bmdp = int(bmdp,2)
 					bmsc = int(bmsc,2)
 					bmlen = int(bmlen,2)
-					self.debugLog(u"Bitmask: {}, Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format(bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen))
+					self.debugLog(u"Bitmask: {}, Scale2: {}, Rate: {}, Meter: {}, DP: {}, Scale1: {}, ScaleT: {}, ByteLength: {}".format((bmask, bmsc2, bmrtype, bmmtype, bmdp, bmsc1, bmsc, bmlen)))
 
 
 					if (bmlen == 1):
@@ -289,7 +289,7 @@ class Plugin(indigo.PluginBase):
 
 
 		if (int(bytes[5],16)) in self.tempIDs: #Temperature Devices
-			#self.debugLog(u"Raw command received (Node {}): {}".format(int(bytes[5],16),(byteListStr)))
+			#self.debugLog(u"Raw command received (Node {}): {}".format((int(bytes[5],16)),(byteListStr)))
 
 			socketMap = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6} #socketMap[endPoint] = SocketNo
 
@@ -307,11 +307,11 @@ class Plugin(indigo.PluginBase):
 				bstr = '00000000' + bmask[2:]
 				bstr = bstr[-8:]
 				bmdp, bmsc, bmlen = bstr[0:3], bstr[3:5], bstr[5:8]
-				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format(bmdp,bmsc,bmlen))
+				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format((bmdp,bmsc,bmlen)))
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format(bmask,bmdp,bmsc,bmlen))
+				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format((bmask,bmdp,bmsc,bmlen)))
 
 				if (bmlen == 1):
 					value = int(bytes[11],16)
@@ -326,10 +326,10 @@ class Plugin(indigo.PluginBase):
 				value = float(value) // (10**bmdp) # Divide by 10^2 (100) or 10^3 (1000) etc
 
 				if (bmsc == 0): # %age humidity
-					self.debugLog(u"Humidity Reported (Node {} Endpoint {}): {} %".format(str(int(bytes[5],16)),str(endpoint),str(value)))
+					self.debugLog(u"Humidity Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(dechumid) + "%")
 					stateid = "humidity"
 				elif (bmsc == 1): #just a value
-					self.debugLog(u"Humidity Reported (Node {} Endpoint {}): {} ".format(str(int(bytes[5],16)),str(endpoint),str(value)))
+					self.debugLog(u"Humidity Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(dechumid))
 					stateid = "humidity"
 
 				dev.updateStateOnServer(stateid, value)
@@ -350,11 +350,11 @@ class Plugin(indigo.PluginBase):
 				bstr = '00000000' + bmask[2:]
 				bstr = bstr[-8:]
 				bmdp, bmsc, bmlen = bstr[0:3], bstr[3:5], bstr[5:8]
-				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format(bmdp,bmsc,bmlen))
+				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format((bmdp,bmsc,bmlen)))
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format(bmask,bmdp,bmsc,bmlen))
+				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format((bmask,bmdp,bmsc,bmlen)))
 
 				if (bmlen == 1):
 					value = int(bytes[11],16)
@@ -370,13 +370,13 @@ class Plugin(indigo.PluginBase):
 
 				if (bmsc == 0): # celsius
 					uivalue = str(value) + " °c"
-					self.debugLog(u"Temperature Reported (Node {} Endpoint {}): {} celsius".format(str(int(bytes[5],16)),str(endpoint),str(value)))
+					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(value) + " celsius")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
 						stateid = "temp1"
 				elif (bmsc == 1): #farenheit
 					uivalue = str(value) + " °f"
-					self.debugLog(u"Temperature Reported (Node {} Endpoint {}): {} farenheit".format(str(int(bytes[5],16)),str(endpoint),str(value)))
+					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(value) + " fahrenheit")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
 						stateid = "temp1"
@@ -403,11 +403,11 @@ class Plugin(indigo.PluginBase):
 				bstr = '00000000' + bmask[2:]
 				bstr = bstr[-8:]
 				bmdp, bmsc, bmlen = bstr[0:3], bstr[3:5], bstr[5:8]
-				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format(bmdp,bmsc,bmlen))
+				#self.debugLog(u"DP: {}, Scale: {}, ByteLength: {}".format((bmdp,bmsc,bmlen)))
 				bmdp = int(bmdp,2)
 				bmsc = int(bmsc,2)
 				bmlen = int(bmlen,2)
-				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format(bmask,bmdp,bmsc,bmlen))
+				self.debugLog(u"Bitmask: {}, DP: {}, Scale: {}, ByteLength: {}".format((bmask,bmdp,bmsc,bmlen)))
 
 				if (bmlen == 1):
 					value = int(bytes[15],16)
@@ -423,13 +423,13 @@ class Plugin(indigo.PluginBase):
 
 				if (bmsc == 0): # celsius
 					uivalue = value + " ?c"
-					self.debugLog(u"Temperature Reported (Node {} Endpoint {}): celsius".format(str(int(bytes[5],16)),str(endpoint),str(value)))
+					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(value) + " celsius")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
 						stateid = "temp1"
 				elif (bmsc == 1): # fahrenheit
 					uivalue = value + " ?f"
-					self.debugLog(u"Temperature Reported (Node {} Endpoint {}): fahrenheit".format(str(int(bytes[5],16)),str(endpoint),str(value)))
+					self.debugLog(u"Temperature Reported (Node " + str(int(bytes[5],16)) + " Endpoint " + str(endpoint) + "): " + str(value) + " fahrenheit")
 					stateid = "temp" + str(endpoint)
 					if (endpoint == None):
 						stateid = "temp1"
@@ -469,83 +469,59 @@ class Plugin(indigo.PluginBase):
 
 		codeStr = [0x32, 0x01, 0x10] #32, 01, 10 = Meter_Get, PowerUsed, Wattage
 
-		indigo.server.log("Requesting total power levels for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,cmdBytes=codeStr,sendMode=1)
+		indigo.server.log("Requesting total power levels for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],cmdBytes=codeStr,sendMode=1)
 
-		indigo.server.log("Requesting power level 1 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=1,cmdBytes=codeStr,sendMode=1)
+		indigo.server.log("Requesting power level 1 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=1,cmdBytes=codeStr,sendMode=1)
 
-		indigo.server.log("Requesting power level 2 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=2,cmdBytes=codeStr,sendMode=1)
+		indigo.server.log("Requesting power level 2 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=2,cmdBytes=codeStr,sendMode=1)
 
-		indigo.server.log("Requesting power level 3 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=3,cmdBytes=codeStr,sendMode=1)
+		indigo.server.log("Requesting power level 3 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=3,cmdBytes=codeStr,sendMode=1)
 
-		indigo.server.log("Requesting power level 4 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=4,cmdBytes=codeStr,sendMode=1)
+		indigo.server.log("Requesting power level 4 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=4,cmdBytes=codeStr,sendMode=1)
 
-		indigo.server.log("Requesting power level 5 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=5,cmdBytes=codeStr,sendMode=1)
+		indigo.server.log("Requesting power level 5 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=5,cmdBytes=codeStr,sendMode=1)
 
-		indigo.server.log("Requesting power level 6 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=6,cmdBytes=codeStr,sendMode=1)
+		indigo.server.log("Requesting power level 6 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=6,cmdBytes=codeStr,sendMode=1)
 
-		indigo.server.log("Requesting power level 7 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=7,cmdBytes=codeStr,sendMode=1)
+		indigo.server.log("Requesting power level 7 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=7,cmdBytes=codeStr,sendMode=1)
 
-		indigo.server.log("Requesting power level 8 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=8,cmdBytes=codeStr,sendMode=1)
+		indigo.server.log("Requesting power level 8 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=8,cmdBytes=codeStr,sendMode=1)
 
 	def resetPower(self,pluginAction):
 		myDev = pluginAction.deviceId
 		node = self.nodeFromDev[int(myDev)]
 		self.debugLog("Node: " + str(node))
-		indigo.server.log("Resetting power levels for node {}".format(node))
+		indigo.server.log("Resetting power levels for node " + str(node))
 
-#		indigo.devices[myDev].updateStateOnServer("socket1power",0)
-#		indigo.devices[myDev].updateStateOnServer("socket2power",0)
-#		indigo.devices[myDev].updateStateOnServer("socket3power",0)
-#		indigo.devices[myDev].updateStateOnServer("socket4power",0)
-#		indigo.devices[myDev].updateStateOnServer("socket5power",0)
-#		indigo.devices[myDev].updateStateOnServer("socket6power",0)
-#		indigo.devices[myDev].updateStateOnServer("socket7power",0)
-#		indigo.devices[myDev].updateStateOnServer("socket8power",0)
-#		indigo.devices[myDev].updateStateOnServer("totalpowercalc",0)
-#		indigo.devices[myDev].updateStateOnServer("totalpowerrep",0)
-#		indigo.devices[myDev].updateStateOnServer("socket1energy",0)
-#		indigo.devices[myDev].updateStateOnServer("socket2energy",0)
-#		indigo.devices[myDev].updateStateOnServer("socket3energy",0)
-#		indigo.devices[myDev].updateStateOnServer("socket4energy",0)
-#		indigo.devices[myDev].updateStateOnServer("socket5energy",0)
-#		indigo.devices[myDev].updateStateOnServer("socket6energy",0)
-#		indigo.devices[myDev].updateStateOnServer("socket7energy",0)
-#		indigo.devices[myDev].updateStateOnServer("socket8energy",0)
-#		indigo.devices[myDev].updateStateOnServer("totalenergycalc",0)
-#		indigo.devices[myDev].updateStateOnServer("totalenergyrep",0)
-
-		newStateList = []
-		newStateList.append({'key':"socket1power", 'value':0})
-		newStateList.append({'key':"socket2power", 'value':0})
-		newStateList.append({'key':"socket3power", 'value':0})
-		newStateList.append({'key':"socket4power", 'value':0})
-		newStateList.append({'key':"socket5power", 'value':0})
-		newStateList.append({'key':"socket6power", 'value':0})
-		newStateList.append({'key':"socket7power", 'value':0})
-		newStateList.append({'key':"socket8power", 'value':0})
-		newStateList.append({'key':"totalpowercalc", 'value':0})
-		newStateList.append({'key':"totalpowerrep", 'value':0})
-		newStateList.append({'key':"socket1energy", 'value':0})
-		newStateList.append({'key':"socket2energy", 'value':0})
-		newStateList.append({'key':"socket3energy", 'value':0})
-		newStateList.append({'key':"socket4energy", 'value':0})
-		newStateList.append({'key':"socket5energy", 'value':0})
-		newStateList.append({'key':"socket6energy", 'value':0})
-		newStateList.append({'key':"socket7energy", 'value':0})
-		newStateList.append({'key':"socket8energy", 'value':0})
-		newStateList.append({'key':"totalenergycalc", 'value':0})
-		newStateList.append({'key':"totalenergyrep", 'value':0})
-
-		indigo.devices[myDev].updateStatesOnServer(newStateList)
+		indigo.devices[myDev].updateStateOnServer("socket1power",0)
+		indigo.devices[myDev].updateStateOnServer("socket2power",0)
+		indigo.devices[myDev].updateStateOnServer("socket3power",0)
+		indigo.devices[myDev].updateStateOnServer("socket4power",0)
+		indigo.devices[myDev].updateStateOnServer("socket5power",0)
+		indigo.devices[myDev].updateStateOnServer("socket6power",0)
+		indigo.devices[myDev].updateStateOnServer("socket7power",0)
+		indigo.devices[myDev].updateStateOnServer("socket8power",0)
+		indigo.devices[myDev].updateStateOnServer("totalpowercalc",0)
+		indigo.devices[myDev].updateStateOnServer("totalpowerrep",0)
+		indigo.devices[myDev].updateStateOnServer("socket1energy",0)
+		indigo.devices[myDev].updateStateOnServer("socket2energy",0)
+		indigo.devices[myDev].updateStateOnServer("socket3energy",0)
+		indigo.devices[myDev].updateStateOnServer("socket4energy",0)
+		indigo.devices[myDev].updateStateOnServer("socket5energy",0)
+		indigo.devices[myDev].updateStateOnServer("socket6energy",0)
+		indigo.devices[myDev].updateStateOnServer("socket7energy",0)
+		indigo.devices[myDev].updateStateOnServer("socket8energy",0)
+		indigo.devices[myDev].updateStateOnServer("totalenergycalc",0)
+		indigo.devices[myDev].updateStateOnServer("totalenergyrep",0)
 
 
 	def getTempAll(self,pluginAction):
@@ -555,25 +531,25 @@ class Plugin(indigo.PluginBase):
 
 		codeStr = [0x31, 0x04, 0x05] #32, 01, 10 = Sensor_Get, Humidity
 
-		indigo.server.log("Requesting humidity for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=1,cmdBytes=codeStr,sendMode=2)
+		indigo.server.log("Requesting humidity for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=1,cmdBytes=codeStr,sendMode=2)
 
 		codeStr = [0x31, 0x04, 0x01] #32, 01, 10 = Sensor_Get, Temp
 
-		indigo.server.log("Requesting temperature 1 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=1,cmdBytes=codeStr,sendMode=2)
+		indigo.server.log("Requesting temperature 1 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=1,cmdBytes=codeStr,sendMode=2)
 
-		indigo.server.log("Requesting temperature 2 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=2,cmdBytes=codeStr,sendMode=2)
+		indigo.server.log("Requesting temperature 2 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=2,cmdBytes=codeStr,sendMode=2)
 
-		indigo.server.log("Requesting temperature 3 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=3,cmdBytes=codeStr,sendMode=2)
+		indigo.server.log("Requesting temperature 3 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=3,cmdBytes=codeStr,sendMode=2)
 
-		indigo.server.log("Requesting temperature 4 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=4,cmdBytes=codeStr,sendMode=2)
+		indigo.server.log("Requesting temperature 4 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=4,cmdBytes=codeStr,sendMode=2)
 
-		indigo.server.log("Requesting temperature 5 for node {}".format(node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=5,cmdBytes=codeStr,sendMode=2)
+		indigo.server.log("Requesting temperature 5 for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=5,cmdBytes=codeStr,sendMode=2)
 
 	def getTemp(self,pluginAction):
 		myDev = pluginAction.deviceId
@@ -584,5 +560,5 @@ class Plugin(indigo.PluginBase):
 
 		codeStr = [0x31, 0x04, 0x01] #32, 01, 10 = Sensor_Get, Temp
 
-		indigo.server.log("Requesting temperature {} for node {}".format(ep,node))
-		indigo.zwave.sendRaw(nodeId=node,endpoint=ep,cmdBytes=codeStr,sendMode=2)
+		indigo.server.log("Requesting temperature " + str(ep) + " for node " + str(node))
+		indigo.zwave.sendRaw(nodeId=self.nodeFromDev[myDev],endpoint=ep,cmdBytes=codeStr,sendMode=2)
